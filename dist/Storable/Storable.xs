@@ -2251,7 +2251,7 @@ static int store_scalar(pTHX_ stcxt_t *cxt, SV *sv)
 static int store_array(pTHX_ stcxt_t *cxt, AV *av)
 {
 	SV **sav;
-	I32 len = av_len(av) + 1;
+	I32 len = av_tindex(av) + 1;
 	I32 i;
 	int ret;
 

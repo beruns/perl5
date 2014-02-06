@@ -700,7 +700,7 @@ DD_dump(pTHX_ SV *val, const char *name, STRLEN namelen, SV *retval, HV *seenhv,
 	else if (realtype == SVt_PVAV) {
 	    SV *totpad;
 	    SSize_t ix = 0;
-	    const SSize_t ixmax = av_len((AV *)ival);
+	    const SSize_t ixmax = av_tindex((AV *)ival);
 	
 	    SV * const ixsv = newSViv(0);
 	    /* allowing for a 24 char wide array index */
@@ -837,11 +837,11 @@ DD_dump(pTHX_ SV *val, const char *name, STRLEN namelen, SV *retval, HV *seenhv,
 		    }
 # ifdef USE_LOCALE_NUMERIC
 		    sortsv(AvARRAY(keys), 
-			   av_len(keys)+1, 
+			   av_tindex(keys)+1, 
 			   IN_LOCALE ? Perl_sv_cmp_locale : Perl_sv_cmp);
 # else
 		    sortsv(AvARRAY(keys), 
-			   av_len(keys)+1, 
+			   av_tindex(keys)+1, 
 			   Perl_sv_cmp);
 # endif
 #endif
@@ -877,7 +877,7 @@ DD_dump(pTHX_ SV *val, const char *name, STRLEN namelen, SV *retval, HV *seenhv,
 		bool do_utf8 = FALSE;
 
                if (sortkeys) {
-                   if (!(keys && (SSize_t)i <= av_len(keys))) break;
+                   if (!(keys && (SSize_t)i <= av_tindex(keys))) break;
                } else {
                    if (!(entry = hv_iternext((HV *)ival))) break;
                }
@@ -1369,7 +1369,7 @@ Data_Dumper_Dumpxs(href, ...)
 		postav = newAV();
 
 		if (todumpav)
-		    imax = av_len(todumpav);
+		    imax = av_tindex(todumpav);
 		else
 		    imax = -1;
 		valstr = newSVpvn("",0);
@@ -1440,7 +1440,7 @@ Data_Dumper_Dumpxs(href, ...)
 		    if (indent >= 2 && !terse)
 			SvREFCNT_dec(newapad);
 
-		    postlen = av_len(postav);
+		    postlen = av_tindex(postav);
 		    if (postlen >= 0 || !terse) {
 			sv_insert(valstr, 0, 0, " = ", 3);
 			sv_insert(valstr, 0, 0, SvPVX_const(name), SvCUR(name));

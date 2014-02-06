@@ -499,7 +499,7 @@ S_ithread_run(void * arg)
 
     {
         AV *params = thread->params;
-        volatile int len = (int)av_len(params)+1;
+        volatile int len = (int)av_tindex(params)+1;
         int ii;
 
         dSP;
