@@ -167,6 +167,20 @@ check_taint_not  $+, "\t\$+";
 check_taint_not  $1, "\t\$1";
 check_taint_not  $2, "\t\$2";
 
+"a" =~ /(a)|(\w)/;	# taint $&, $`, $', $+, $1.
+check_taint      $&, "/(a)|(\\w)/\t\$&";
+check_taint      $`, "\t\$`";
+check_taint      $', "\t\$'";
+check_taint      $+, "\t\$+";
+check_taint      $1, "\t\$1";
+ok($1 eq 'a', ("\t" x 4) . "\$1 is 'a'");
+ok(! defined $2, ("\t" x 4) . "\$2 is undefined");
+check_taint_not  $2, "\t\$2";
+check_taint_not  $3, "\t\$3";
+
+/(.)/;	# untaint $&, $`, $', $+, $1.
+check_taint_not  $&, "/./\t\$&";
+
 /(\s)/;	# taint $&, $`, $', $+, $1.
 check_taint      $&, "/(\\s)/\t\$&";
 check_taint      $`, "\t\$`";
